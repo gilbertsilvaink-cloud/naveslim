@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Slim 3 - Oferta Exclusiva</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+    .quiz-container {
+      max-width: 700px;
+      margin: 30px auto;
+      background: #222;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0px 5px 25px rgba(0,0,0,0.6);
+      text-align: center;
+    }
+    h1, h2 {
+      color: #f1c40f;
+      text-shadow: 1px 1px 5px #000;
+    }
+    .hidden { display: none; }
+    .question {
+      font-size: 20px;
+      margin-bottom: 15px;
+      font-weight: bold;
+      color: #fff;
+    }
+    .answers button, .cta-btn {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(45deg, #e74c3c, #c0392b);
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+    }
+    .answers button:hover, .cta-btn:hover {
+      background: linear-gradient(45deg, #c0392b, #e74c3c);
+      transform: scale(1.03);
+    }
+
+    /* Estilo da Roleta */
+    .wheel-container {
+      margin: 30px auto;
+      text-align: center;
+    }
+    #pointer {
+      width: 0; height: 0; 
+      border-left: 25px solid transparent;
+      border-right: 25px solid transparent;
+      border-bottom: 50px solid #f1c40f;
+      margin: 0 auto 20px;
+      filter: drop-shadow(0 0 8px #f39c12);
+    }
+    #wheel {
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      border: 15px solid #f1c40f;
+      box-shadow: 0px 0px 25px rgba(241,196,15,0.8);
+      position: relative;
+      margin: 0 auto 20px;
+      overflow: hidden;
+      transform: rotate(0deg);
+      transition: transform 4s cubic-bezier(0.25, 1, 0.5, 1);
+      background: repeating-conic-gradient(
+        #e74c3c 0deg 60deg,
+        #2ecc71 60deg 120deg,
+        #e74c3c 120deg 180deg,
+        #2ecc71 180deg 240deg,
+        #e74c3c 240deg 300deg,
+        #2ecc71 300deg 360deg
+      );
+    }
+    .wheel-label {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 0%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: bold;
+      font-size: 16px;
+      text-shadow: 1px 1px 3px #000;
+    }
+    .wheel-label:nth-child(1) { transform: rotate(30deg) translateX(-50%); }
+    .wheel-label:nth-child(2) { transform: rotate(90deg) translateX(-50%); }
+    .wheel-label:nth-child(3) { transform: rotate(150deg) translateX(-50%); }
+    .wheel-label:nth-child(4) { transform: rotate(210deg) translateX(-50%); }
+    .wheel-label:nth-child(5) { transform: rotate(270deg) translateX(-50%); }
+    .wheel-label:nth-child(6) { transform: rotate(330deg) translateX(-50%); }
+
+    .result-text {
+      font-size: 20px;
+      margin: 20px 0;
+      font-weight: bold;
+      color: #2ecc71;
+      text-shadow: 1px 1px 5px #000;
+    }
+    .final-cta {
+      margin-top: 20px;
+    }
+    .final-cta a {
+      display: inline-block;
+      padding: 18px 30px;
+      font-size: 20px;
+      background: linear-gradient(45deg, #f1c40f, #f39c12);
+      color: #111;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: 0.3s;
+      font-weight: bold;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.7);
+    }
+    .final-cta a:hover { background: linear-gradient(45deg, #f39c12, #f1c40f); transform: scale(1.05); }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>🎯 Descubra Seu Caminho Para Secar a Barriga</h1>
+    <p>Responda 5 perguntas rápidas e veja o método ideal para você!</p>
+
+    <!-- Perguntas -->
+    <div class="quiz-step" id="step1">
+      <div class="question">1. Qual seu maior desafio para emagrecer hoje?</div>
+      <div class="answers">
+        <button onclick="nextStep(2)">Falta de tempo</button>
+        <button onclick="nextStep(2)">Não consigo seguir dieta</button>
+        <button onclick="nextStep(2)">Ansiedade</button>
+        <button onclick="nextStep(2)">Já tentei de tudo</button>
+      </div>
+    </div>
+
+    <div class="quiz-step hidden" id="step2">
+      <div class="question">2. Em quanto tempo você gostaria de ver resultados?</div>
+      <div class="answers">
+        <button onclick="nextStep(3)">7 dias</button>
+        <button onclick="nextStep(3)">14 dias</button>
+        <button onclick="nextStep(3)">21 dias</button>
+        <button onclick="nextStep(3)">Não importa</button>
+      </div>
+    </div>
+
+    <div class="quiz-step hidden" id="step3">
+      <div class="question">3. Quantos quilos você gostaria de eliminar?</div>
+      <div class="answers">
+        <button onclick="nextStep(4)">2 a 5 kg</button>
+        <button onclick="nextStep(4)">6 a 10 kg</button>
+        <button onclick="nextStep(4)">11 a 15 kg</button>
+        <button onclick="nextStep(4)">+ de 15 kg</button>
+      </div>
+    </div>
+
+    <div class="quiz-step hidden" id="step4">
+      <div class="question">4. Qual dessas frases mais parece com você?</div>
+      <div class="answers">
+        <button onclick="nextStep(5)">Sempre paro no meio</button>
+        <button onclick="nextStep(5)">Já comprei métodos caros</button>
+        <button onclick="nextStep(5)">Tenho dificuldade de controlar a fome</button>
+        <button onclick="nextStep(5)">Quero algo simples</button>
+      </div>
+    </div>
+
+    <div class="quiz-step hidden" id="step5">
+      <div class="question">5. Se recebesse um passo a passo testado e aprovado, seguiria?</div>
+      <div class="answers">
+        <button onclick="showWheel()">Sim, com certeza!</button>
+        <button onclick="showWheel()">Sim, se for simples</button>
+        <button onclick="showWheel()">Talvez</button>
+        <button onclick="showWheel()">Não sei</button>
+      </div>
+    </div>
+
+    <!-- Roleta Final -->
+    <div class="quiz-step hidden" id="wheelStep">
+      <h2>🎰 Última Etapa: Gire a Roleta para Revelar Seu Desconto</h2>
+      <div id="pointer"></div>
+      <div id="wheel">
+        <div class="wheel-label">🔥 R$19,99</div>
+        <div class="wheel-label">R$97</div>
+        <div class="wheel-label">🔥 R$19,99</div>
+        <div class="wheel-label">R$79</div>
+        <div class="wheel-label">🔥 R$19,99</div>
+        <div class="wheel-label">R$59</div>
+      </div>
+      <button class="cta-btn" onclick="spinWheel()">🎯 Girar Agora</button>
+      <div id="wheelResult" class="result-text hidden"></div>
+      <div class="final-cta hidden" id="finalCta">
+        <a href="https://pay.kiwify.com.br/8PSMeAv" target="_blank">🔥 Quero meu Slim 3 agora</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function nextStep(step) {
+      document.querySelectorAll('.quiz-step').forEach(el => el.classList.add('hidden'));
+      document.getElementById('step' + step).classList.remove('hidden');
+    }
+
+    function showWheel() {
+      document.querySelectorAll('.quiz-step').forEach(el => el.classList.add('hidden'));
+      document.getElementById('wheelStep').classList.remove('hidden');
+    }
+
+    function spinWheel() {
+      const wheel = document.getElementById("wheel");
+      const result = document.getElementById("wheelResult");
+      const finalCta = document.getElementById("finalCta");
+
+      // Configurado para sempre parar em uma fatia vermelha (R$19,99)
+      let stopDeg = 1800 + 30; // alinhando no primeiro setor vermelho
+      wheel.style.transform = `rotate(${stopDeg}deg)`;
+
+      setTimeout(() => {
+        result.innerHTML = "🎉 Jackpot! Você desbloqueou o desconto exclusivo de <b>R$97 → R$19,99</b>";
+        result.classList.remove("hidden");
+        finalCta.classList.remove("hidden");
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
+
